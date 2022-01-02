@@ -95,8 +95,6 @@ if __name__ == '__main__':
     answer = select_word(words)
     answer = answer.upper()
 
-    print(answer)
-
     win = False
     outputs = []
     i = 1
