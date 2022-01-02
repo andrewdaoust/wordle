@@ -47,7 +47,6 @@ def check_input(guess, answer):
         ]
 
     output = [None] * 5
-    # correct_indices = []
     unmatched_indices = []
     unmatched_answer_letters = []
 
@@ -57,12 +56,10 @@ def check_input(guess, answer):
 
         if guess_letter == answer_letter:
             output[i] = colored(guess_letter, 'grey', 'on_green')
-            # correct_indices.append(i)
         else:
             unmatched_indices.append(i)
             unmatched_answer_letters.append(answer_letter)
 
-    # guess_remaining = ''
     for j in unmatched_indices:
         guess_letter = guess[j]
 
@@ -70,7 +67,7 @@ def check_input(guess, answer):
             output[j] = colored(guess_letter, 'grey', 'on_yellow')
             unmatched_answer_letters.remove(guess_letter)
         else:
-            output[j] = colored(guess_letter, 'grey', 'on_white')
+            output[j] = guess_letter # colored(guess_letter, 'grey', 'on_white')
 
     return False, output
 
@@ -95,10 +92,12 @@ if __name__ == '__main__':
     answer = select_word(words)
     answer = answer.upper()
 
+    print('Guess the 5 letter word, you have 6 guesses.')
+
     win = False
     outputs = []
     i = 1
-    while i < 6:
+    while i < 7:
         guess = input(f'Guess the 5 letter word ({i}/6): ')
 
         valid = validate_guess(guess, words)
@@ -117,3 +116,6 @@ if __name__ == '__main__':
         else:
             render(outputs)
             i += 1
+
+    if not win:
+        print(f'You lost! The word was {answer}')
