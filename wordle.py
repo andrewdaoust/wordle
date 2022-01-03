@@ -92,14 +92,12 @@ if __name__ == '__main__':
     answer = select_word(words)
     answer = answer.upper()
 
-    print(answer)
-
     print('Guess the 5 letter word, you have 6 guesses.')
 
     win = False
     outputs = []
     i = 1
-    while i < 7:
+    while i <= 6:
         guess = input(f'Guess the 5 letter word ({i}/6): ')
 
         valid = validate_guess(guess, words)
