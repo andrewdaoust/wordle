@@ -39,11 +39,11 @@ def check_input(guess, answer):
     # Correct
     if guess == answer:
         return True, [
-            colored(guess[0], 'black', 'on_green'),
-            colored(guess[1], 'black', 'on_green'),
-            colored(guess[2], 'black', 'on_green'),
-            colored(guess[3], 'black', 'on_green'),
-            colored(guess[4], 'black', 'on_green')
+            colored(guess[0], 'grey', 'on_green'),
+            colored(guess[1], 'grey', 'on_green'),
+            colored(guess[2], 'grey', 'on_green'),
+            colored(guess[3], 'grey', 'on_green'),
+            colored(guess[4], 'grey', 'on_green')
         ]
 
     output = [None] * 5
@@ -91,6 +91,8 @@ if __name__ == '__main__':
     words = load_words()
     answer = select_word(words)
     answer = answer.upper()
+
+    print(answer)
 
     print('Guess the 5 letter word, you have 6 guesses.')
 
