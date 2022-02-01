@@ -4,13 +4,21 @@ from termcolor import colored
 
 
 def load_words():
-    with open('words.txt', 'r') as f:
-        words = f.readlines()
+    with open('words1.txt', 'r') as f:
+        words1 = f.readlines()
 
     five_letter_words = []
-    for word in words:
+    for word in words1:
         word = word.replace('\n', '')
         five_letter_words.append(word)
+
+    # with open('words2.txt', 'r') as f:
+    #     words2 = f.readlines()
+
+    # for word in words2:
+    #     word = word.replace('\n', '')
+    #     five_letter_words.append(word)
+
     return five_letter_words
 
 
