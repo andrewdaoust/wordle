@@ -1,6 +1,9 @@
-function Key({ letter, keyState handleClick }) {
-  let color
-  switch (keyState) {
+import * as _ from 'lodash';
+import { useState } from 'react';
+
+function Key({ letter, keyState, onClick }) {
+  let color;
+  switch (parseInt(keyState)) {
     case 1: // not in word
       color = "bg-slate-700";
       break;
@@ -19,13 +22,13 @@ function Key({ letter, keyState handleClick }) {
     
   return (
     <div className={className}>
-      <button onClick={() => alert(letter)}>{letter}</button>
+      <button onClick={() => onClick(letter)}>{letter}</button>
     </div>
   );
 }
 
 
-export function Keyboard(state) {
+export function Keyboard() {
   const initialState = {
     q: {letter: "Q", keyState: 0},
     w: {letter: "W", keyState: 0},
@@ -54,14 +57,22 @@ export function Keyboard(state) {
     n: {letter: "N", keyState: 0},
     m: {letter: "M", keyState: 0},
   };
-  [ keyState, setKeyState ] = useState(initialState);
+  let [ state, setState ] = useState(initialState);
+
+  // console.log(state)
+
+  let handleClick = (letter) => {
+    let newState = _.cloneDeep(state);
+    newState[letter.toLowerCase()].keyState = 3;
+    setState(newState);
+  };
 
   const rowStyle = "flex items-stretch";
   return (
     // <Key letter="Q" keyState="0" />
     <div>
       <div className={rowStyle}>
-        <Key letter="Q" keyState="0" onClick={setKeyState}/>
+        <Key letter={state.q.letter} keyState={state.q.keyState} onClick={handleClick}/>
         <Key letter="W" keyState="0" />
         <Key letter="E" keyState="0" />
         <Key letter="R" keyState="0" />
