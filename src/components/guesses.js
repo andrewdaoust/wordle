@@ -1,15 +1,18 @@
 import * as _ from "lodash";
+import { useEffect } from 'react';
 
-export const initialBoard = new Array(30).fill(null);
 
 export function GuessBoard({ board }) {
+  let flatBoard = board.flat();
+  let fillBoard = new Array(30 - flatBoard.length).fill(null);
+  flatBoard = flatBoard.concat(fillBoard);
   let cells = [];
-  _.each(board, (letter) => {
-    let cell = <Cell state={letter} />;
+  _.each(flatBoard, (letter) => {
+    let cell = <Cell props={letter} />;
     cells.push(cell);
   });
 
-  const style = "grid grid-cols-5 gap-4 w-1/3 content-center";
+  const style = "grid grid-cols-5 gap-2 w-1/3 h-2/3 content-center";
   return (
     <div className={style} >
       { cells }
@@ -18,14 +21,14 @@ export function GuessBoard({ board }) {
 }
 
 
-function Cell({ state }) {
-  if (!state) {
-    state = { letter: "", color: "bg-gray-400" };
+function Cell({ props }) {
+  if (!props) {
+    props = { letter: "", color: "bg-gray-400" };
   }
-  const style = `w-20 h-20 m-0.5 ${state.color} border-2 border-slate-300`;
+  const style = `w-full h-20 m-0.5 ${props.color} border-2 border-slate-300`;
   return (
     <div className={style} >
-      {state.letter}
+      {props.letter}
     </div>
   );
 }
