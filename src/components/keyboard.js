@@ -3,6 +3,36 @@ import { useState } from 'react';
 import { BackspaceIcon } from '@heroicons/react/outline';
 
 
+export const initialKeyboard = {
+  q: { letter: "Q", keyState: 0 },
+  w: { letter: "W", keyState: 0 },
+  e: { letter: "E", keyState: 0 },
+  r: { letter: "R", keyState: 0 },
+  t: { letter: "T", keyState: 0 },
+  y: { letter: "Y", keyState: 0 },
+  u: { letter: "U", keyState: 0 },
+  i: { letter: "I", keyState: 0 },
+  o: { letter: "O", keyState: 0 },
+  p: { letter: "P", keyState: 0 },
+  a: { letter: "A", keyState: 0 },
+  s: { letter: "S", keyState: 0 },
+  d: { letter: "D", keyState: 0 },
+  f: { letter: "F", keyState: 0 },
+  g: { letter: "G", keyState: 0 },
+  h: { letter: "H", keyState: 0 },
+  j: { letter: "J", keyState: 0 },
+  k: { letter: "K", keyState: 0 },
+  l: { letter: "L", keyState: 0 },
+  z: { letter: "Z", keyState: 0 },
+  x: { letter: "X", keyState: 0 },
+  c: { letter: "C", keyState: 0 },
+  v: { letter: "V", keyState: 0 },
+  b: { letter: "B", keyState: 0 },
+  n: { letter: "N", keyState: 0 },
+  m: { letter: "M", keyState: 0 },
+};
+
+
 function Key({ letter, keyState, onClick }) {
   let color;
   switch (parseInt(keyState)) {
@@ -32,35 +62,7 @@ function Key({ letter, keyState, onClick }) {
 
 
 export function Keyboard() {
-  const initialState = {
-    q: { letter: "Q", keyState: 0 },
-    w: { letter: "W", keyState: 0 },
-    e: { letter: "E", keyState: 0 },
-    r: { letter: "R", keyState: 0 },
-    t: { letter: "T", keyState: 0 },
-    y: { letter: "Y", keyState: 0 },
-    u: { letter: "U", keyState: 0 },
-    i: { letter: "I", keyState: 0 },
-    o: { letter: "O", keyState: 0 },
-    p: { letter: "P", keyState: 0 },
-    a: { letter: "A", keyState: 0 },
-    s: { letter: "S", keyState: 0 },
-    d: { letter: "D", keyState: 0 },
-    f: { letter: "F", keyState: 0 },
-    g: { letter: "G", keyState: 0 },
-    h: { letter: "H", keyState: 0 },
-    j: { letter: "J", keyState: 0 },
-    k: { letter: "K", keyState: 0 },
-    l: { letter: "L", keyState: 0 },
-    z: { letter: "Z", keyState: 0 },
-    x: { letter: "X", keyState: 0 },
-    c: { letter: "C", keyState: 0 },
-    v: { letter: "V", keyState: 0 },
-    b: { letter: "B", keyState: 0 },
-    n: { letter: "N", keyState: 0 },
-    m: { letter: "M", keyState: 0 },
-  };
-  let [ state, setState ] = useState(initialState);
+  let [state, setState] = useState(initialKeyboard);
 
   // console.log(state)
 
@@ -76,11 +78,11 @@ export function Keyboard() {
   };
 
   const backspaceClick = (letter) => {
-    setState(initialState);
+    setState(initialKeyboard);
   }
 
   const enterClick = (letter) => {
-    setState(initialState);
+    setState(initialKeyboard);
   }
 
   const rowStyle = "flex items-stretch";
