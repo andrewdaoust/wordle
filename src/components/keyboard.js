@@ -1,35 +1,36 @@
 import * as _ from 'lodash';
 import { BackspaceIcon } from '@heroicons/react/outline';
-import { validateGuess } from '../lib/util';
+import { validateGuess, validWord } from '../lib/util';
+import { UNKNOWN_GREY } from '../lib/util';
 
 
 export const initialKeyboard = {
-  q: { key: "Q", color: "bg-gray-400" },
-  w: { key: "W", color: "bg-gray-400" },
-  e: { key: "E", color: "bg-gray-400" },
-  r: { key: "R", color: "bg-gray-400" },
-  t: { key: "T", color: "bg-gray-400" },
-  y: { key: "Y", color: "bg-gray-400" },
-  u: { key: "U", color: "bg-gray-400" },
-  i: { key: "I", color: "bg-gray-400" },
-  o: { key: "O", color: "bg-gray-400" },
-  p: { key: "P", color: "bg-gray-400" },
-  a: { key: "A", color: "bg-gray-400" },
-  s: { key: "S", color: "bg-gray-400" },
-  d: { key: "D", color: "bg-gray-400" },
-  f: { key: "F", color: "bg-gray-400" },
-  g: { key: "G", color: "bg-gray-400" },
-  h: { key: "H", color: "bg-gray-400" },
-  j: { key: "J", color: "bg-gray-400" },
-  k: { key: "K", color: "bg-gray-400" },
-  l: { key: "L", color: "bg-gray-400" },
-  z: { key: "Z", color: "bg-gray-400" },
-  x: { key: "X", color: "bg-gray-400" },
-  c: { key: "C", color: "bg-gray-400" },
-  v: { key: "V", color: "bg-gray-400" },
-  b: { key: "B", color: "bg-gray-400" },
-  n: { key: "N", color: "bg-gray-400" },
-  m: { key: "M", color: "bg-gray-400" },
+  q: { key: "Q", color: UNKNOWN_GREY },
+  w: { key: "W", color: UNKNOWN_GREY },
+  e: { key: "E", color: UNKNOWN_GREY },
+  r: { key: "R", color: UNKNOWN_GREY },
+  t: { key: "T", color: UNKNOWN_GREY },
+  y: { key: "Y", color: UNKNOWN_GREY },
+  u: { key: "U", color: UNKNOWN_GREY },
+  i: { key: "I", color: UNKNOWN_GREY },
+  o: { key: "O", color: UNKNOWN_GREY },
+  p: { key: "P", color: UNKNOWN_GREY },
+  a: { key: "A", color: UNKNOWN_GREY },
+  s: { key: "S", color: UNKNOWN_GREY },
+  d: { key: "D", color: UNKNOWN_GREY },
+  f: { key: "F", color: UNKNOWN_GREY },
+  g: { key: "G", color: UNKNOWN_GREY },
+  h: { key: "H", color: UNKNOWN_GREY },
+  j: { key: "J", color: UNKNOWN_GREY },
+  k: { key: "K", color: UNKNOWN_GREY },
+  l: { key: "L", color: UNKNOWN_GREY },
+  z: { key: "Z", color: UNKNOWN_GREY },
+  x: { key: "X", color: UNKNOWN_GREY },
+  c: { key: "C", color: UNKNOWN_GREY },
+  v: { key: "V", color: UNKNOWN_GREY },
+  b: { key: "B", color: UNKNOWN_GREY },
+  n: { key: "N", color: UNKNOWN_GREY },
+  m: { key: "M", color: UNKNOWN_GREY },
 };
 
 
@@ -46,7 +47,7 @@ function Key({ letter, color, onClick }) {
   //     color = "bg-lime-500";
   //     break;
   //   default: // letter not guessed
-  //     color = "bg-gray-400";
+  //     color = UNKNOWN_GREY;
   //     break;
   // }
 
@@ -61,38 +62,72 @@ function Key({ letter, color, onClick }) {
 }
 
 
-export function Keyboard({ answer, kbState, latestGuess, setLatestGuess, guesses, setGuesses }) {
+export function Keyboard({
+  answer,
+  kbState,
+  setKbState,
+  latestGuess,
+  setLatestGuess,
+  guesses,
+  setGuesses,
+  gameOver,
+  setGameOver,
+}) {
   const onKeystroke = (letter) => {
-    if (latestGuess.length <= 4) {
+    if (!gameOver && latestGuess.length <= 4) {
       latestGuess.push(letter);
       setLatestGuess(latestGuess);
 
-      console.log(latestGuess);
+      // console.log(latestGuess);
 
-      guesses[guesses.length-1].push({ letter: letter, color: "bg-gray-400" });
+      guesses[guesses.length - 1].push({ letter: letter, color: UNKNOWN_GREY });
+      guesses = JSON.parse(JSON.stringify(guesses));
       setGuesses(guesses);
 
-      console.log(guesses);
+      // console.log(guesses);
     }
   };
 
   const onBackspace = (letter) => {
-    if (latestGuess.length > 0) {
+    if (!gameOver && latestGuess.length > 0) {
       latestGuess.pop();
       setLatestGuess(latestGuess);
 
-      console.log(latestGuess);
+      // console.log(latestGuess);
 
-      guesses.pop();
+      guesses[guesses.length - 1].pop();
+      guesses = JSON.parse(JSON.stringify(guesses));
       setGuesses(guesses);
+
+      // console.log(guesses);
     }
   };
 
   const onEnter = (letter) => {
-    if (latestGuess.length === 5) {
+    if (!gameOver && latestGuess.length === 5) {
       let guess = latestGuess.join("");
+      if (validWord(guess)) {
+        let [didWin, validatedGuess, kbUpdates] = validateGuess(guess, answer);
 
-      let validatedGuess = validateGuess(guess, answer);
+        guesses[guesses.length - 1] = validatedGuess;
+        guesses.push([]);
+        setGuesses(guesses);
+        setLatestGuess([]);
+        _.map(_.keys(kbUpdates), (key) => {
+          kbState[key] = kbUpdates[key];
+        });
+        setKbState(JSON.parse(JSON.stringify(kbState)));
+
+        if (didWin) {
+          setGameOver(true);
+          alert("YOU WIN! Refresh to play again");
+        } else if (guesses.length > 6) {
+          setGameOver(true);
+          alert(`YOU LOSE! The word was ${answer}. Refresh to play again`);
+        }
+      } else {
+        alert("Invalid word");
+      }
     }
   };
 
@@ -201,7 +236,7 @@ export function Keyboard({ answer, kbState, latestGuess, setLatestGuess, guesses
         />
       </div>
       <div className={rowStyle}>
-        <Key letter="enter" color="bg-gray-400" onClick={onEnter} />
+        <Key letter="enter" color={UNKNOWN_GREY} onClick={onEnter} />
         <Key
           letter={kbState.z.key}
           color={kbState.z.color}
@@ -238,7 +273,7 @@ export function Keyboard({ answer, kbState, latestGuess, setLatestGuess, guesses
           onClick={onKeystroke}
         />
         <Key
-          letter={<BackspaceIcon color="bg-gray-400" className="h-18 w-12" />}
+          letter={<BackspaceIcon color={UNKNOWN_GREY} className="h-18 w-12" />}
           onClick={onBackspace}
         />
       </div>

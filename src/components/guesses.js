@@ -1,6 +1,5 @@
 import * as _ from "lodash";
-import { useEffect } from 'react';
-
+import { useEffect } from "react";
 
 export function GuessBoard({ board }) {
   let flatBoard = board.flat();
@@ -13,22 +12,17 @@ export function GuessBoard({ board }) {
   });
 
   const style = "grid grid-cols-5 gap-2 w-1/3 h-2/3 content-center";
-  return (
-    <div className={style} >
-      { cells }
-    </div>
-  );
+  return <div className={style}>{cells}</div>;
 }
-
 
 function Cell({ props }) {
   if (!props) {
     props = { letter: "", color: "bg-gray-400" };
   }
-  const style = `w-full h-20 m-0.5 ${props.color} border-2 border-slate-300`;
+  const style = `w-full h-20 m-0.5 pt-4 ${props.color} border-2 border-slate-300 text-center`;
   return (
-    <div className={style} >
-      {props.letter}
+    <div className={style}>
+      <p className="font-sans text-5xl text-white">{props.letter}</p>
     </div>
   );
 }

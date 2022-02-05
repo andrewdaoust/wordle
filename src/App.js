@@ -6,10 +6,9 @@ import { Wordle } from './components/wordle';
 
 function App() {
   return (
-    <div className="bg-slate-600">
-      <header>
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        WORDLE CLONE
+    <div className="bg-slate-600 h-screen">
+      <header className="h-1/8">
+        <span className="text-white">WORDLE ∞</span>
       </header>
       <Wordle />
     </div>
